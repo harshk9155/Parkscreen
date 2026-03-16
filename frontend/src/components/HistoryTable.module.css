@@ -1,0 +1,38 @@
+.wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table thead th {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.07em;
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg); white-space: nowrap;
+}
+.table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s; cursor: pointer;
+}
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: var(--bg); }
+.table tbody td { padding: 12px 14px; font-size: 13.5px; color: var(--text); }
+.mono { font-size: 13px !important; color: var(--text-muted) !important; }
+.muted { color: var(--text-muted) !important; font-size: 12.5px !important; }
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+.low { background: var(--success-bg); color: #059669; }
+.med { background: var(--warning-bg); color: #b45309; }
+.high { background: var(--danger-bg); color: var(--danger); }
+.pred {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 12px; font-weight: 500;
+}
+.control { background: var(--success-bg); color: #059669; }
+.parkinson { background: var(--danger-bg); color: var(--danger); }
+.empty { text-align: center; padding: 48px 24px; color: var(--text-muted); }
+.emptyIcon { font-size: 32px; margin-bottom: 12px; }
+.emptyTitle { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.emptyDesc { font-size: 13px; line-height: 1.6; }

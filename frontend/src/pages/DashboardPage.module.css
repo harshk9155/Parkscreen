@@ -1,0 +1,31 @@
+.page { padding: 28px; max-width: 1280px; margin: 0 auto; }
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.title { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; }
+.subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.newTestBtn {
+  padding: 11px 24px; background: var(--teal); color: white;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500; transition: background 0.2s;
+}
+.newTestBtn:hover { background: var(--teal-dark); }
+.statsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.statCard {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px;
+  box-shadow: var(--shadow); border-left: 3px solid transparent;
+}
+.accent1 { border-left-color: var(--teal); }
+.accent2 { border-left-color: #6366f1; }
+.accent3 { border-left-color: var(--warning); }
+.accent4 { border-left-color: var(--success); }
+.statLabel { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.statVal { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; color: var(--text); line-height: 1; margin-bottom: 10px; }
+.statTag { display: inline-flex; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; background: var(--teal-light); color: var(--teal-dark); }
+.tagGreen { background: var(--success-bg); color: #059669; }
+.tagRed { background: var(--danger-bg); color: var(--danger); }
+.chartsRow { margin-bottom: 20px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
+.cardHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.cardTitle { font-size: 15px; font-weight: 600; color: var(--text); }
+.viewAll { font-size: 12px; color: var(--teal); font-weight: 500; background: none; border: none; }
+@media (max-width: 900px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } }
