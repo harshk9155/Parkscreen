@@ -60,7 +60,10 @@ export function useKeystroke() {
       hand,
     };
 
-    setEvents((prev) => [...prev, newEvent]);
+    if (lastEvent.current !== null) {
+      setEvents((prev) => [...prev, newEvent]);
+    }
+
 
     // Update lastEvent for the next keystroke's calculations
     lastEvent.current = { downTime, upTime };

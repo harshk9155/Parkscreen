@@ -19,7 +19,6 @@ def predict_session(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Need at least 100 events with both hands represented"
         )
-
     # Pass to feature pipeline (BE-2 will implement this)
     # For now return the raw counts so we can test
     return {
