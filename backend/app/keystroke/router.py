@@ -54,7 +54,7 @@ def predict_session(
         features=X_new.iloc[0].to_dict()
     )
 
-    session.probability = proba
+    session.probability = float(proba)
     session.prediction = label
     db.commit()
 

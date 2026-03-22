@@ -9,3 +9,6 @@ pydantic-settings
 alembic
 python-multipart
 email-validator
+pandas
+joblib
+scikit-learn
