@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar';
 import TypingBox from '../components/TypingBox';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useKeystroke } from '../hooks/useKeystroke';
-import { computeFeatures } from '../utils/computeFeatures';
 import { submitTypingSession } from '../Services/api';
 import { useAuth } from '../Context/AuthContext';
 import styles from './TypingTestPage.module.css';
@@ -66,9 +65,14 @@ export default function TypingTestPage() {
     clearInterval(timerRef.current);
     setLoading(true);
     try {
-      const features = computeFeatures(events);
-      const result   = await submitTypingSession(events);  // cookie sent automatically
-      navigate('/result', { state: { result, features } });
+      // ── BEFORE (localStorage approach) ──
+      // const result = await submitTypingSession(events, token);
+
+      // ── AFTER (cookie approach) ──
+      // token param is gone — cookie is sent automatically by the browser
+      const result = await submitTypingSession(events);
+
+      navigate('/result', { state: { result } });
     } catch (err) {
       alert('Submission failed: ' + err.message);
     } finally {
