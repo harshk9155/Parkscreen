@@ -50,11 +50,11 @@ export async function logoutUser() {
 
 // ── TYPING SESSION ────────────────────────────────
 
-export async function submitTypingSession(events) {  // ← token param removed
+export async function submitTypingSession(events) {
   const res = await fetch(`${BASE_URL}/session/predict`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',                           // ← cookie sent automatically
+    credentials: 'include',
     body: JSON.stringify({ events }),
   });
   const data = await res.json();
@@ -64,8 +64,8 @@ export async function submitTypingSession(events) {  // ← token param removed
 
 // ── HISTORY ───────────────────────────────────────
 
-export async function getSessionHistory() {           // ← token param removed
-  const res = await fetch(`${BASE_URL}/sessions/history`, {
+export async function getSessionHistory() {
+  const res = await fetch(`${BASE_URL}/session/history`, {  // ← fixed: was /sessions/history
     credentials: 'include',
   });
   const data = await res.json();
@@ -73,7 +73,7 @@ export async function getSessionHistory() {           // ← token param removed
   return data;
 }
 
-export async function getSessionDetail(sessionId) {   // ← token param removed
+export async function getSessionDetail(sessionId) {
   const res = await fetch(`${BASE_URL}/sessions/${sessionId}`, {
     credentials: 'include',
   });
@@ -84,7 +84,7 @@ export async function getSessionDetail(sessionId) {   // ← token param removed
 
 // ── FEEDBACK ──────────────────────────────────────
 
-export async function submitFeedback(payload) {       // ← token param removed
+export async function submitFeedback(payload) {
   const res = await fetch(`${BASE_URL}/feedback`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

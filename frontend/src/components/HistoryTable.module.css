@@ -14,25 +14,38 @@
 }
 .table tbody tr:last-child { border-bottom: none; }
 .table tbody tr:hover { background: var(--bg); }
-.table tbody td { padding: 12px 14px; font-size: 13.5px; color: var(--text); }
-.mono { font-size: 13px !important; color: var(--text-muted) !important; }
+.table tbody td { padding: 12px 14px; font-size: 13.5px; color: var(--text); white-space: nowrap; vertical-align: middle; }
+
+/* Row number */
+.index { color: var(--text-muted); font-size: 12px; width: 32px; }
+
+/* Date cell */
+.dateCell { display: flex; flex-direction: column; gap: 2px; }
+.time { font-size: 11px; color: var(--text-muted); }
+
+/* Prediction badge */
+.predBadge {
+  display: inline-block;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+}
+.predBadge[data-type='parkinson'] { background: var(--danger-bg); color: var(--danger); }
+.predBadge[data-type='control']   { background: var(--success-bg); color: #059669; }
+
+/* Probability bar */
+.probCell { min-width: 130px; }
+.probRow  { display: flex; align-items: center; gap: 8px; }
+.probBar  { flex: 1; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.probFill { height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+.probText { font-size: 12px; font-weight: 600; min-width: 36px; text-align: right; }
+
+/* Arrow */
+.arrow { color: var(--text-muted); font-size: 18px; text-align: right; padding-right: 8px; }
+
+/* Kept from original (used elsewhere) */
+.mono  { font-size: 13px !important; color: var(--text-muted) !important; }
 .muted { color: var(--text-muted) !important; font-size: 12.5px !important; }
-.badge {
-  display: inline-flex; align-items: center;
-  padding: 4px 10px; border-radius: 20px;
-  font-size: 12px; font-weight: 600;
-}
-.low { background: var(--success-bg); color: #059669; }
-.med { background: var(--warning-bg); color: #b45309; }
-.high { background: var(--danger-bg); color: var(--danger); }
-.pred {
-  display: inline-flex; align-items: center;
-  padding: 4px 10px; border-radius: 6px;
-  font-size: 12px; font-weight: 500;
-}
-.control { background: var(--success-bg); color: #059669; }
-.parkinson { background: var(--danger-bg); color: var(--danger); }
 .empty { text-align: center; padding: 48px 24px; color: var(--text-muted); }
-.emptyIcon { font-size: 32px; margin-bottom: 12px; }
+.emptyIcon  { font-size: 32px; margin-bottom: 12px; }
 .emptyTitle { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.emptyDesc { font-size: 13px; line-height: 1.6; }
+.emptyDesc  { font-size: 13px; line-height: 1.6; }

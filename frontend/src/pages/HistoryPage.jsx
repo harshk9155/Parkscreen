@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import HistoryTable from '../components/HistoryTable';
 import TrendChart from '../components/TrendChart';
-import { getSessionHistory } from '../Services/api';  // ← no token param
+import { getSessionHistory } from '../Services/api';
 import styles from './HistoryPage.module.css';
 
 export default function HistoryPage() {
@@ -13,11 +13,10 @@ export default function HistoryPage() {
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState('');
 
-  // Fetch all sessions on page load
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const data = await getSessionHistory(); // ← token param removed
+        const data = await getSessionHistory();
         setSessions(data.sessions || []);
       } catch (err) {
         setError('Failed to load history. Please try again.');
@@ -29,11 +28,16 @@ export default function HistoryPage() {
     fetchHistory();
   }, []);
 
-  const avg = sessions.length
-    ? sessions.reduce((s, r) => s + r.probability, 0) / sessions.length
-    : null;
-  const min = sessions.length ? Math.min(...sessions.map((s) => s.probability)) : null;
-  const max = sessions.length ? Math.max(...sessions.map((s) => s.probability)) : null;
+  // Only use completed sessions for stats
+  const completed = sessions.filter((s) => s.probability != null);
+
+  const avg          = completed.length ? completed.reduce((acc, s) => acc + s.probability, 0) / completed.length : null;
+  const min          = completed.length ? Math.min(...completed.map((s) => s.probability)) : null;
+  const max          = completed.length ? Math.max(...completed.map((s) => s.probability)) : null;
+  const highRiskCount = completed.filter((s) => s.probability >= 0.5).length;
+
+  const pct  = (v) => (v != null ? Math.round(v * 100) + '%' : '—');
+  const dash = (v) => (loading ? '…' : v);
 
   return (
     <>
@@ -53,56 +57,94 @@ export default function HistoryPage() {
 
         {/* Error */}
         {error && (
-          <div style={{
-            background: 'var(--danger-bg)', border: '1px solid #fca5a5',
-            borderRadius: 'var(--radius-sm)', padding: '12px 16px',
-            fontSize: '13px', color: 'var(--danger)', marginBottom: '20px',
-          }}>
-            {error}
-          </div>
+          <div className={styles.errorBanner}>{error}</div>
         )}
 
         {/* Chart + Summary row */}
         <div className={styles.topRow}>
-          <div className={styles.card} style={{ flex: 1.5 }}>
+
+          <div className={`${styles.card} ${styles.chartCard}`}>
             <div className={styles.cardTitle}>Probability Over Time</div>
-            <TrendChart sessions={sessions} />
+            <TrendChart sessions={completed} />
           </div>
 
-          <div className={styles.card} style={{ flex: 1 }}>
+          <div className={`${styles.card} ${styles.summaryCard}`}>
             <div className={styles.cardTitle}>Summary</div>
             <div className={styles.summaryGrid}>
-              {[
-                { label: 'Total tests',  val: loading ? '...' : sessions.length,                                color: 'var(--text)'    },
-                { label: 'Avg score',    val: loading ? '...' : avg !== null ? Math.round(avg * 100) + '%' : '—', color: 'var(--teal)'    },
-                { label: 'Lowest risk',  val: loading ? '...' : min !== null ? Math.round(min * 100) + '%' : '—', color: 'var(--success)' },
-                { label: 'Highest risk', val: loading ? '...' : max !== null ? Math.round(max * 100) + '%' : '—', color: 'var(--danger)'  },
-              ].map((item) => (
-                <div key={item.label} className={styles.summaryItem}>
-                  <div className={styles.summaryLabel}>{item.label}</div>
-                  <div className={styles.summaryVal} style={{ color: item.color }}>
-                    {item.val}
-                  </div>
+
+              <div className={styles.summaryItem}>
+                <div className={styles.summaryLabel}>Total Tests</div>
+                <div className={styles.summaryVal} style={{ color: 'var(--text)' }}>
+                  {dash(sessions.length)}
                 </div>
-              ))}
+              </div>
+
+              <div className={styles.summaryItem}>
+                <div className={styles.summaryLabel}>Avg Score</div>
+                <div className={styles.summaryVal} style={{ color: 'var(--teal)' }}>
+                  {dash(pct(avg))}
+                </div>
+              </div>
+
+              <div className={styles.summaryItem}>
+                <div className={styles.summaryLabel}>Lowest Risk</div>
+                <div className={styles.summaryVal} style={{ color: 'var(--success)' }}>
+                  {dash(pct(min))}
+                </div>
+              </div>
+
+              <div className={styles.summaryItem}>
+                <div className={styles.summaryLabel}>Highest Risk</div>
+                <div className={styles.summaryVal} style={{ color: 'var(--danger)' }}>
+                  {dash(pct(max))}
+                </div>
+              </div>
+
+              <div className={styles.summaryItem} style={{ gridColumn: 'span 2' }}>
+                <div className={styles.summaryLabel}>High-Risk Sessions</div>
+                <div className={styles.summaryVal} style={{ color: 'var(--danger)' }}>
+                  {dash(highRiskCount)}
+                </div>
+              </div>
+
+              <div className={styles.summaryItem} style={{ gridColumn: 'span 2' }}>
+                <div className={styles.summaryLabel}>Latest Result</div>
+                <div
+                  className={styles.summaryVal}
+                  style={{
+                    color: completed[0]?.prediction === "Parkinson's"
+                      ? 'var(--danger)'
+                      : completed[0]?.prediction === 'Healthy'
+                      ? 'var(--success)'
+                      : 'var(--text-muted)',
+                  }}
+                >
+                  {dash(completed.length ? completed[0].prediction ?? '—' : '—')}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
 
-        {/* Full sessions table */}
+        {/* All Sessions table */}
         <div className={styles.card}>
           <div className={styles.cardTitle}>All Sessions</div>
-          {loading
-            ? <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                Loading sessions...
-              </div>
-            : <HistoryTable
-                sessions={sessions}
-                onRowClick={(s) =>
-                  navigate('/result', { state: { result: s, features: s.features } })
-                }
-              />
-          }
+          {loading ? (
+            <div className={styles.loadingMsg}>Loading sessions…</div>
+          ) : completed.length === 0 ? (
+            <div className={styles.empty}>
+              <span className={styles.emptyIcon}>📋</span>
+              <p>No sessions yet — complete a typing test first</p>
+            </div>
+          ) : (
+            <HistoryTable
+              sessions={completed}
+              onRowClick={(s) =>
+                navigate('/result', { state: { result: s, features: s.features } })
+              }
+            />
+          )}
         </div>
 
       </div>
