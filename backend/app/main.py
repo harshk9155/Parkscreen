@@ -11,7 +11,7 @@ app = FastAPI(title="Parkinson Keystroke Screening API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server (Vite default)
+    allow_origins=["https://parkscreen.vercel.app","http://localhost:5173"],  # React dev server (Vite default)
     allow_credentials=True,                   # Required for cookies
     allow_methods=["*"],
     allow_headers=["*"],

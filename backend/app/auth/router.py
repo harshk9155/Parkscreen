@@ -33,8 +33,8 @@ def login(data: LoginRequest, response: Response, db: Session = Depends(get_db))
         key="access_token",
         value=token,
         httponly=True,        # JS cannot read this cookie
-        samesite="lax",       # CSRF protection
-        secure=False          # Set True in production (HTTPS only)
+        samesite="none",
+        secure=True 
     )
     return {"message": "Login successful"}
 
